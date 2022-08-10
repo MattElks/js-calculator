@@ -11,8 +11,8 @@ main {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  width: 450px;
-  height: 550px;
+  width: 420px;
+  height: 500px;
   padding: 20px;
   background-color: black;
   border-radius: 20px;
@@ -42,8 +42,9 @@ main {
 .btn-1 {
   grid-row: 1/2;
   grid-column: 1/5;
-  background-color: gold; /* CHANGE TO BLACK*/
+  background-color: darkgray;
   margin-bottom: 10px;
+  border-radius: 12px;
 }
 
 .btn-18 {

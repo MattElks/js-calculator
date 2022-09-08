@@ -12,6 +12,14 @@ const inputDigit = (digit) => {
   calculator.displayValue = displayValue === "0" ? digit : displayValue + digit;
 };
 
+//inputs decimal
+const decimal = document.querySelector(".decimal");
+const inputDecimal = (dec) => {
+  if (!calculator.displayValue.includes(dec)) {
+    calculator.displayValue += dec;
+  }
+};
+
 //updates displayed value
 const updateDisplay = () => {
   const display = document.querySelector(".display");
@@ -31,7 +39,8 @@ keys.addEventListener("click", (event) => {
     return;
   }
   if (target.classList.contains("decimal")) {
-    console.log("decimal: ", target.innerHTML);
+    inputDecimal(target.innerHTML);
+    updateDisplay();
     return;
   }
   if (target.classList.contains("clear")) {

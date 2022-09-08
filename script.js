@@ -33,10 +33,29 @@ const handleOperator = (nextOperator) => {
   const inputValue = parseFloat(displayValue);
   if (firstOperand === null && !isNaN(inputValue)) {
     calculator.firstOperand = inputValue;
+  } else if (operator) {
+    const result = calculate(firstOperand, inputValue, operator);
+    calculator.displayValue = String(result);
+    calculator.firstOperand = result;
   }
   calculator.waitingForSecondOperand = true;
   calculator.operator = nextOperator;
   console.log(calculator);
+};
+//calculates
+const calculate = (firstOperand, secondOperand, operator) => {
+  switch (true) {
+    case operator === "+":
+      return firstOperand + secondOperand;
+    case operator === "-":
+      return firstOperand - secondOperand;
+    case operator === "÷":
+      return firstOperand / secondOperand;
+    case operator === "x":
+      return firstOperand * secondOperand;
+    default:
+      return secondOperand;
+  }
 };
 
 //updates displayed value
@@ -70,3 +89,8 @@ keys.addEventListener("click", (event) => {
   inputDigit(target.innerHTML);
   updateDisplay();
 });
+
+/* 
+Change AC > C on displayValue change
+add functionality to +/- btn
+add functionality % btn */

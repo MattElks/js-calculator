@@ -8,8 +8,15 @@ const calculator = {
 
 //inputs digits
 const inputDigit = (digit) => {
-  const { displayValue } = calculator;
-  calculator.displayValue = displayValue === "0" ? digit : displayValue + digit;
+  const { displayValue, waitingForSecondOperand } = calculator;
+  if (waitingForSecondOperand === true) {
+    calculator.displayValue = digit;
+    calculator.waitingForSecondOperand = false;
+  } else {
+    calculator.displayValue =
+      displayValue === "0" ? digit : displayValue + digit;
+    console.log(calculator);
+  }
 };
 
 //inputs decimal
@@ -18,6 +25,18 @@ const inputDecimal = (dec) => {
   if (!calculator.displayValue.includes(dec)) {
     calculator.displayValue += dec;
   }
+};
+
+//handles operators
+const handleOperator = (nextOperator) => {
+  const { firstOperand, displayValue, operator } = calculator;
+  const inputValue = parseFloat(displayValue);
+  if (firstOperand === null && !isNaN(inputValue)) {
+    calculator.firstOperand = inputValue;
+  }
+  calculator.waitingForSecondOperand = true;
+  calculator.operator = nextOperator;
+  console.log(calculator);
 };
 
 //updates displayed value
@@ -35,7 +54,8 @@ keys.addEventListener("click", (event) => {
     return;
   }
   if (target.classList.contains("operator")) {
-    console.log("operator: ", target.innerHTML);
+    handleOperator(target.innerHTML);
+    updateDisplay();
     return;
   }
   if (target.classList.contains("decimal")) {

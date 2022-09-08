@@ -6,6 +6,12 @@ const calculator = {
   operator: null,
 };
 
+//inputs digits
+const inputDigit = (digit) => {
+  const { displayValue } = calculator;
+  calculator.displayValue = displayValue === "0" ? digit : displayValue + digit;
+};
+
 //updates displayed value
 const updateDisplay = () => {
   const display = document.querySelector(".display");
@@ -32,6 +38,6 @@ keys.addEventListener("click", (event) => {
     console.log("clear: ", target.innerHTML);
     return;
   }
-  console.log("digit: ", target.innerHTML);
-  console.log(event);
+  inputDigit(target.innerHTML);
+  updateDisplay();
 });

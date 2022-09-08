@@ -64,10 +64,22 @@ const calculate = (firstOperand, secondOperand, operator) => {
   }
 };
 
+//reset calculator
+const resetCalculator = () => {
+  calculator.displayValue = "0";
+  calculator.firstOperand = null;
+  calculator.waitingForSecondOperand = false;
+  calculator.operator = null;
+};
+
 //updates displayed value
 const updateDisplay = () => {
   const display = document.querySelector(".display");
   display.innerHTML = calculator.displayValue;
+  const clear = document.querySelector(".clear");
+  display.innerHTML === "0"
+    ? (clear.innerHTML = "A/C")
+    : (clear.innerHTML = "C");
 };
 updateDisplay();
 
@@ -89,7 +101,8 @@ keys.addEventListener("click", (event) => {
     return;
   }
   if (target.classList.contains("clear")) {
-    console.log("clear: ", target.innerHTML);
+    resetCalculator();
+    updateDisplay();
     return;
   }
   inputDigit(target.innerHTML);

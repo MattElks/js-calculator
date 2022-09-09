@@ -27,11 +27,20 @@ const inputDecimal = (dec) => {
   }
 };
 
-//handles operators
+//handles operators > Add functionality to / by 100
 const handleOperator = (nextOperator) => {
   const { firstOperand, displayValue, operator } = calculator;
   const inputValue = parseFloat(displayValue);
+  const dividedByHun = inputValue / 100;
+  const firstOperandDividedByHun = firstOperand / 100;
 
+  if (nextOperator === "%" && calculator.waitingForSecondOperand) {
+    calculator.displayValue = String(firstOperandDividedByHun);
+    calculator.firstOperand = firstOperandDividedByHun;
+    calculator.waitingForSecondOperand = true;
+    console.log(calculator);
+    return;
+  }
   if (operator && calculator.waitingForSecondOperand) {
     calculator.operator = nextOperator;
     console.log(calculator);
@@ -39,16 +48,24 @@ const handleOperator = (nextOperator) => {
   }
   if (firstOperand === null && !isNaN(inputValue)) {
     calculator.firstOperand = inputValue;
+  }
+  if (nextOperator === "%") {
+    calculator.displayValue = String(dividedByHun);
+    calculator.firstOperand = dividedByHun;
+    calculator.waitingForSecondOperand = true;
+    console.log(calculator);
+    return;
   } else if (operator) {
     const result = calculate(firstOperand, inputValue, operator);
     calculator.displayValue = String(result);
     calculator.firstOperand = result;
   }
+
   calculator.waitingForSecondOperand = true;
   calculator.operator = nextOperator;
   console.log(calculator);
 };
-//calculates
+//calculates value to be displayed
 const calculate = (firstOperand, secondOperand, operator) => {
   switch (true) {
     case operator === "+":
@@ -110,6 +127,5 @@ keys.addEventListener("click", (event) => {
 });
 
 /* 
-Change AC > C on displayValue change
 add functionality to +/- btn
 add functionality % btn */

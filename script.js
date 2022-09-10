@@ -27,12 +27,35 @@ const inputDecimal = (dec) => {
   }
 };
 
-//handles operators > Add functionality to / by 100
+//handles operators >
+/* only thing that doesnt work is when two ops are pressed b2b
+  Need to account for pressing - > -0 > -digit != digit
+  if displayValue ==== "-0" || "-0." > concat - + new digit
+  Any negative number to be displayed as pos  */
 const handleOperator = (nextOperator) => {
   const { firstOperand, displayValue, operator } = calculator;
   const inputValue = parseFloat(displayValue);
   const dividedByHun = inputValue / 100;
   const firstOperandDividedByHun = firstOperand / 100;
+
+  if (nextOperator === "+/-" && !displayValue.includes("-")) {
+    const minus = "-";
+    const negValue = minus.concat("", displayValue);
+    calculator.displayValue = negValue;
+    calculator.firstOperand = parseFloat(negValue);
+    calculator.waitingForSecondOperand = true;
+    console.log(calculator);
+    return;
+  }
+
+  if (nextOperator === "+/-" && displayValue.includes("-")) {
+    console.log(displayValue);
+    const posValue = displayValue.slice(1, displayValue.length);
+    calculator.displayValue = posValue;
+    calculator.firstOperand = parseFloat(posValue);
+    console.log(calculator);
+    return;
+  }
 
   if (nextOperator === "%" && calculator.waitingForSecondOperand) {
     calculator.displayValue = String(firstOperandDividedByHun);
@@ -125,7 +148,3 @@ keys.addEventListener("click", (event) => {
   inputDigit(target.innerHTML);
   updateDisplay();
 });
-
-/* 
-add functionality to +/- btn
-add functionality % btn */

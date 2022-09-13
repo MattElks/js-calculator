@@ -169,6 +169,30 @@ const updateDisplay = () => {
 updateDisplay();
 
 //handles keys pressed
+/* const keys = document.querySelector("main");
+keys.addEventListener("click", (event) => {
+  const { target } = event;
+  if (!target.matches("div") || target.classList.contains("display")) {
+    return;
+  }
+  if (target.classList.contains("operator")) {
+    handleOperator(target.innerHTML);
+    updateDisplay();
+    return;
+  }
+  if (target.classList.contains("decimal")) {
+    inputDecimal(target.innerHTML);
+    updateDisplay();
+    return;
+  }
+  if (target.classList.contains("clear")) {
+    resetCalculator();
+    updateDisplay();
+    return;
+  }
+  inputDigit(target.innerHTML);
+  updateDisplay();
+}); */
 const keys = document.querySelector("main");
 keys.addEventListener("click", (event) => {
   const { target } = event;
@@ -189,7 +213,8 @@ keys.addEventListener("click", (event) => {
     case ".":
       inputDecimal(innerHTML);
       break;
-    case "AC" || "C":
+    case "AC":
+    case "C":
       resetCalculator();
       break;
     default:

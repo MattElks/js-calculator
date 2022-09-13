@@ -163,7 +163,7 @@ const updateDisplay = () => {
   display.innerHTML = calculator.displayValue;
   const clear = document.querySelector(".clear");
   display.innerHTML === "0"
-    ? (clear.innerHTML = "A/C")
+    ? (clear.innerHTML = "AC")
     : (clear.innerHTML = "C");
 };
 updateDisplay();
@@ -172,24 +172,30 @@ updateDisplay();
 const keys = document.querySelector("main");
 keys.addEventListener("click", (event) => {
   const { target } = event;
+  const { innerHTML } = target;
   if (!target.matches("div") || target.classList.contains("display")) {
     return;
   }
-  if (target.classList.contains("operator")) {
-    handleOperator(target.innerHTML);
-    updateDisplay();
-    return;
+  switch (innerHTML) {
+    case "+":
+    case "-":
+    case "x":
+    case "÷":
+    case "=":
+    case "%":
+    case "+/-":
+      handleOperator(innerHTML);
+      break;
+    case ".":
+      inputDecimal(innerHTML);
+      break;
+    case "AC" || "C":
+      resetCalculator();
+      break;
+    default:
+      if (Number.isInteger(parseFloat(innerHTML))) {
+        inputDigit(innerHTML);
+      }
   }
-  if (target.classList.contains("decimal")) {
-    inputDecimal(target.innerHTML);
-    updateDisplay();
-    return;
-  }
-  if (target.classList.contains("clear")) {
-    resetCalculator();
-    updateDisplay();
-    return;
-  }
-  inputDigit(target.innerHTML);
   updateDisplay();
 });

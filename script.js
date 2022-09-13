@@ -124,7 +124,7 @@ const handleOperator = (nextOperator) => {
     calculator.firstOperand = inputValue;
   } else if (operator) {
     const result = calculate(firstOperand, inputValue, operator);
-    calculator.displayValue = String(result);
+    calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
     calculator.firstOperand = result;
   }
 
@@ -168,31 +168,6 @@ const updateDisplay = () => {
 };
 updateDisplay();
 
-//handles keys pressed
-/* const keys = document.querySelector("main");
-keys.addEventListener("click", (event) => {
-  const { target } = event;
-  if (!target.matches("div") || target.classList.contains("display")) {
-    return;
-  }
-  if (target.classList.contains("operator")) {
-    handleOperator(target.innerHTML);
-    updateDisplay();
-    return;
-  }
-  if (target.classList.contains("decimal")) {
-    inputDecimal(target.innerHTML);
-    updateDisplay();
-    return;
-  }
-  if (target.classList.contains("clear")) {
-    resetCalculator();
-    updateDisplay();
-    return;
-  }
-  inputDigit(target.innerHTML);
-  updateDisplay();
-}); */
 const keys = document.querySelector("main");
 keys.addEventListener("click", (event) => {
   const { target } = event;

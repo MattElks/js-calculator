@@ -7,12 +7,34 @@ const calculator = {
 };
 
 //inputs digits
+//waiting for 2nd op === true > add - to display value
+
 const inputDigit = (digit) => {
-  const { displayValue, waitingForSecondOperand } = calculator;
+  const { displayValue, waitingForSecondOperand, operator } = calculator;
+
+  //handles digit input after %
+  if (operator === "%" && calculator.waitingForSecondOperand) {
+    console.log("digit");
+    calculator.displayValue = digit;
+    calculator.waitingForSecondOperand = false;
+    calculator.firstOperand = null;
+    console.log(calculator);
+    return;
+  }
+  //handles
+  if (displayValue === "-0") {
+    calculator.displayValue = "".concat("-", digit);
+    console.log(calculator);
+    return;
+  }
+
   if (waitingForSecondOperand === true) {
     calculator.displayValue = digit;
     calculator.waitingForSecondOperand = false;
-  } else {
+  }
+  // when display === -0 > digit should replace 0 > -digit > waitingForSecondOp === true??
+  // Needs to account for just adding .digit aswell as 0.digit > tutorial covers this
+  else {
     calculator.displayValue =
       displayValue === "0" ? digit : displayValue + digit;
     console.log(calculator);
@@ -27,29 +49,32 @@ const inputDecimal = (dec) => {
   }
 };
 
-//handles operators >
-/* only thing that doesnt work is when two ops are pressed b2b
-  Need to account for pressing - > -0 > -digit != digit
-  if displayValue ==== "-0" || "-0." > concat - + new digit
-  Any negative number to be displayed as pos  */
+//handles operators
 const handleOperator = (nextOperator) => {
   const { firstOperand, displayValue, operator } = calculator;
   const inputValue = parseFloat(displayValue);
   const dividedByHun = inputValue / 100;
-  const firstOperandDividedByHun = firstOperand / 100;
 
-  if (nextOperator === "+/-" && !displayValue.includes("-")) {
+  //prepends "-" to display value when calculator.waiting... === true
+  if (
+    nextOperator === "+/-" &&
+    !displayValue.includes("-") &&
+    calculator.waitingForSecondOperand
+  ) {
     const minus = "-";
     const negValue = minus.concat("", displayValue);
     calculator.displayValue = negValue;
     calculator.firstOperand = parseFloat(negValue);
-    calculator.waitingForSecondOperand = true;
     console.log(calculator);
     return;
   }
 
-  if (nextOperator === "+/-" && displayValue.includes("-")) {
-    console.log(displayValue);
+  //removes "-" from display value when calculator.waiting... === true
+  if (
+    nextOperator === "+/-" &&
+    displayValue.includes("-") &&
+    calculator.waitingForSecondOperand
+  ) {
     const posValue = displayValue.slice(1, displayValue.length);
     calculator.displayValue = posValue;
     calculator.firstOperand = parseFloat(posValue);
@@ -57,27 +82,46 @@ const handleOperator = (nextOperator) => {
     return;
   }
 
-  if (nextOperator === "%" && calculator.waitingForSecondOperand) {
-    calculator.displayValue = String(firstOperandDividedByHun);
-    calculator.firstOperand = firstOperandDividedByHun;
-    calculator.waitingForSecondOperand = true;
+  //prepends "-" to display value
+  if (nextOperator === "+/-" && !displayValue.includes("-")) {
+    const minus = "-";
+    const negValue = minus.concat("", displayValue);
+    calculator.displayValue = negValue;
     console.log(calculator);
     return;
   }
+  //removes "-" from display value
+  if (nextOperator === "+/-" && displayValue.includes("-")) {
+    const posValue = displayValue.slice(1, displayValue.length);
+    calculator.displayValue = posValue;
+    console.log(calculator);
+    return;
+  }
+
+  //handles operators other than "+/-" being clicked before digit
+  if (nextOperator && displayValue === "0") {
+    console.log(calculator);
+    return;
+  }
+
+  //divides display value by 100
+  if (nextOperator === "%") {
+    calculator.displayValue = String(dividedByHun);
+    calculator.firstOperand = dividedByHun;
+    calculator.waitingForSecondOperand = true;
+    calculator.operator = nextOperator;
+    console.log(calculator);
+    return;
+  }
+  //handles operators being clicked repeatedly
   if (operator && calculator.waitingForSecondOperand) {
     calculator.operator = nextOperator;
     console.log(calculator);
     return;
   }
+  //sets initial value for firstOperand
   if (firstOperand === null && !isNaN(inputValue)) {
     calculator.firstOperand = inputValue;
-  }
-  if (nextOperator === "%") {
-    calculator.displayValue = String(dividedByHun);
-    calculator.firstOperand = dividedByHun;
-    calculator.waitingForSecondOperand = true;
-    console.log(calculator);
-    return;
   } else if (operator) {
     const result = calculate(firstOperand, inputValue, operator);
     calculator.displayValue = String(result);
@@ -110,6 +154,7 @@ const resetCalculator = () => {
   calculator.firstOperand = null;
   calculator.waitingForSecondOperand = false;
   calculator.operator = null;
+  console.log(calculator);
 };
 
 //updates displayed value

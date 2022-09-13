@@ -7,8 +7,6 @@ const calculator = {
 };
 
 //inputs digits
-//waiting for 2nd op === true > add - to display value
-
 const inputDigit = (digit) => {
   const { displayValue, waitingForSecondOperand, operator } = calculator;
 
@@ -21,20 +19,17 @@ const inputDigit = (digit) => {
     console.log(calculator);
     return;
   }
-  //handles
+  //replaces 0 with new digit
   if (displayValue === "-0") {
     calculator.displayValue = "".concat("-", digit);
     console.log(calculator);
     return;
   }
-
+  //replaces initial digits in calulator display after operator has been clicked
   if (waitingForSecondOperand === true) {
     calculator.displayValue = digit;
     calculator.waitingForSecondOperand = false;
-  }
-  // when display === -0 > digit should replace 0 > -digit > waitingForSecondOp === true??
-  // Needs to account for just adding .digit aswell as 0.digit > tutorial covers this
-  else {
+  } else {
     calculator.displayValue =
       displayValue === "0" ? digit : displayValue + digit;
     console.log(calculator);
@@ -44,6 +39,11 @@ const inputDigit = (digit) => {
 //inputs decimal
 const decimal = document.querySelector(".decimal");
 const inputDecimal = (dec) => {
+  if (calculator.waitingForSecondOperand === true) {
+    calculator.displayValue = "0.";
+    calculator.waitingForSecondOperand = false;
+    return;
+  }
   if (!calculator.displayValue.includes(dec)) {
     calculator.displayValue += dec;
   }

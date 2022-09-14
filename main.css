@@ -17,10 +17,12 @@ main {
   background-color: black;
   border-radius: 20px;
 }
+
 .light-grey {
   background-color: lightgray;
   color: black;
 }
+
 .dark-grey {
   background-color: darkgray;
   color: white;
@@ -28,6 +30,16 @@ main {
 .orange {
   background-color: orange;
   color: white;
+}
+
+.orange:active,
+.dark-grey:active {
+  transform: translateY(1px);
+  box-shadow: 1px -1px 10px rgba(0, 0, 0, 0.3) inset;
+}
+.light-grey:active {
+  transform: translateY(1px);
+  box-shadow: 1px -1px 10px rgba(0, 0, 0, 0.2) inset;
 }
 
 .btn {
